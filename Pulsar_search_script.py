@@ -104,7 +104,7 @@ def main():
     search_type = params.get('search_type')
     
     # Run the pulsar search
-    if search_type == 0:  # Fixed the issue with the condition
+    if search_type == 0:
         search_pulsar(search_input_file_dir, search_output_dir, fil_file, DM_array, dm_step, total_obs_time, sampling_time, num_dm, accel_bin, workers)
 
     # Step 4: Load the remaining required parameters and run candidate sifting using the loaded parameters
@@ -131,12 +131,15 @@ def main():
     batch_convert_ps_to_png(folding_output_dir, folding_output_dir, workers, keyword = os.path.splitext(os.path.basename(fil_file))[0])
 
     # Step 7: Load parameters, and launch the candidate classifier if selected
+    ml_path = os.path.join(base_dir, "Machine_learning")
+    python2_path = params.get("python2_path")
+
     # Get the classifier flag
     do_classify = params.get('do_classify')
 
     # Run the candidate classification
-    if do_classify == 0:  # Fixed the issue with the condition
-        candidate_classification(params)
+    if do_classify == 0:
+        run_classifier(classifier_input_dir, classifier_output_dir, python2_path, ml_path)
 
 
 if __name__ == "__main__":

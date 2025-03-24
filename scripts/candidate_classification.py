@@ -72,7 +72,7 @@ def process_candidate_files(input_dir, output_dir):
     print(f"Copied Negative Candidate Files: {total_negative}")
 
 
-def classifier_cmds(input_dir, output_dir, python_path, ml_path):
+def run_classifier(input_dir, output_dir, python_path, ml_path):
     # Construct the first command (Score generation)
     score_script = os.path.join(ml_path, "PulsarProcessingScripts", "src", "CandidateScoreGenerators", "ScoreGenerator.py")
     score_output = os.path.join(output_dir, "scores.arff")
