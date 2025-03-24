@@ -48,6 +48,10 @@ if not os.path.exists(config_file_path):
     logging.error(f"Configuration file not found: {config_file_path}")
     sys.exit(1)
 
+def ensure_directory_exists(directory):
+    """Creates the directory if it does not exist."""
+    if directory and not os.path.exists(directory):
+        os.makedirs(directory, exist_ok=True)
 
 def main():
     """
@@ -65,15 +69,21 @@ def main():
         print(f"Error loading parameters from configuration file: {e}")
         sys.exit(1)
 
-    # Extract directories
+    # Extract directories and ensure they exist
     search_input_file_dir = params.get('search_input_file_dir')
     search_output_dir = params.get('search_output_dir')
-    sifting_input_dir = params.get('sifting_input_dir')
-    sifting_output_dir = params.get('sifting_output_dir')
-    folding_input_dir = params.get('folding_input_dir')
-    folding_output_dir = params.get('folding_output_dir')
-    classifier_input_dir = params.get('classifier_input_dir')
-    classifier_output_dir = params.get('classifier_output_dir')
+
+    # Same directoris and their derivatives
+    sifting_input_dir = search_output_dir
+    sifting_output_dir = search_output_dir # Same as input
+    folding_input_dir = search_output_dir
+    folding_output_dir = os.path.join(search_output_dir, "folding_outputs")
+    classifier_input_dir = folding_output_dir
+    classifier_output_dir = os.path.join(search_output_dir, "classifier_outputs")
+
+    # Ensure all directories exist
+    for dir_path in [search_input_file_dir, search_output_dir, folding_output_dir, classifier_output_dir]:
+        ensure_directory_exists(dir_path)
 
     # Step 2: Form the DM array
     start_DM = params.get('start_DM')
