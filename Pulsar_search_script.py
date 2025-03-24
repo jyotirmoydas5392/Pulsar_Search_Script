@@ -82,7 +82,7 @@ def main():
     classifier_output_dir = os.path.join(search_output_dir, "classifier_outputs")
 
     # Ensure all directories exist
-    for dir_path in [search_input_file_dir, search_output_dir, folding_output_dir, classifier_output_dir]:
+    for dir_path in [search_output_dir, folding_output_dir, classifier_output_dir]:
         ensure_directory_exists(dir_path)
 
     # Step 2: Form the DM array

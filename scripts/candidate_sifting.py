@@ -24,12 +24,16 @@ def candidate_sifting(input_dir, output_dir, fil_file, DM_array, accel_bin, peri
         with open(file_path) as f:
             lines = f.readlines()
 
-        # Check if the separator line exists
-        try:
-            b = lines.index('------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n')
-        except ValueError:
-            print(f"Warning: Separator line not found in {file_path}")
+        # Identify all separator line positions
+        separator_indices = [i for i, line in enumerate(lines) if set(line.strip()) == {'-'}]
+
+        if len(separator_indices) < 2:
+            print(f"Warning: Less than two separator lines found in {file_path}")
             continue
+
+        # Get the second separator line
+        b = separator_indices[1]
+        cand_len.append(b)
         
         cand_len.append(b)
 
@@ -56,10 +60,16 @@ def candidate_sifting(input_dir, output_dir, fil_file, DM_array, accel_bin, peri
         with open(file_path) as f:
             lines = f.readlines()
 
-        try:
-            b = lines.index('------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n')
-        except ValueError:
+        # Identify all separator line positions
+        separator_indices = [i for i, line in enumerate(lines) if set(line.strip()) == {'-'}]
+
+        if len(separator_indices) < 2:
+            print(f"Warning: Less than two separator lines found in {file_path}")
             continue
+
+        # Get the second separator line
+        b = separator_indices[1]
+        cand_len.append(b)
 
         for j in range(3, b - 4):
             line_split = list(filter(lambda x: x != "", lines[j].split(" ")))

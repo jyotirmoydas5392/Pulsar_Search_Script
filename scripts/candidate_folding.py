@@ -46,7 +46,7 @@ def generate_folding_commands(candidates, file_name, accel_bin, output_dir, fil_
         fil_file_path = os.path.join(fil_file_dir, f"{file_name}.fil")
         if os.path.exists(fil_file_path):
             fil_cmd = (f"prepfold -accelcand {cand_index} -accelfile {accel_file} "
-                       f"-dm {dm_value} -nodmsearch -noxwin -searchpdd -zerodm -o "
+                       f"-dm {dm_value} -nodmsearch -noxwin -nopdsearch -zerodm -o "
                        f"{file_name}_DM{dm_value}_FIL "
                        f"{fil_file_path} "
                        f">> {os.path.join(output_dir, 'prepfold.log')} 2>&1")

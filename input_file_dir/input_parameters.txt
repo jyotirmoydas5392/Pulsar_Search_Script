@@ -6,7 +6,7 @@ search_output_dir       = /home/jdas/data/47_100_PA_CD_data/NGC6637/31Jan2025/re
 search_type = 1  # 0 for full search, 1 for sorting and folding only
 
 #Classification flag and path
-python2_path = 
+python2_path = /home/jdas/anaconda3/envs/conda_python2/bin/python2
 do_classify = 1  # 0 for classification enabled, 1 for classification disabled
 
 #CPUs for executing the search
