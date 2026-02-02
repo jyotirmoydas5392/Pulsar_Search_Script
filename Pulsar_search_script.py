@@ -34,7 +34,8 @@ try:
     from removing_duplicate_candidates import *
     from candidate_folding import *
     from ps_to_png import *
-    from candidate_classification import *
+    from ml_candidate_classification import *
+    from ai_candidate_classification import *
     logging.info("Modules imported successfully.")
 except ImportError as e:
     logging.error("Error importing required modules.", exc_info=True)
