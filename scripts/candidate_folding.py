@@ -59,7 +59,7 @@ def generate_folding_commands(candidates, file_name, accel_bin, output_dir, fil_
 def folding(cmd):
     """Execute fold command."""
     try:
-        print(f"Running folding command: {command}")
+        print(f"Running folding command: {cmd}")
         subprocess.run(cmd, shell=True, check=True)
     except subprocess.CalledProcessError as e:
         print(f"Error executing ddp command: {e}")
