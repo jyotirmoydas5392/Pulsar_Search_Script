@@ -35,4 +35,6 @@ fold_type             = 0      # Folding type:
 # Additional parameters for full search
 total_obs_time = 5400  # Total observation time in seconds
 sampling_time = 81.92  # Sampling time in microseconds
+
+# One CPU will handle this number of de-dispersion trials, so try to maintain num_dm x workers = total de-disperison trials
 num_dm = 4  # Number of DMs per prepsubband command
