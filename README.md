@@ -1,8 +1,8 @@
 # PSS Pulsar Search Pipeline
 
-This repository contains a modular Python-based pipeline for performing pulsar search, candidate sifting, folding, and classification using uGMRT filterbank data.
+This repository contains a modular Python-based pipeline for performing pulsar search, candidate sifting, folding, and classification for the uGMRT or any-other telescopes filterbank data.
 
-The pipeline is designed to be flexible, GPU-enabled, and easily configurable through external input parameter files.
+The pipeline is designed to be flexible, and easily configurable through external input parameter files.
 
 ---
 
