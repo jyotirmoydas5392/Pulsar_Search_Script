@@ -20,7 +20,9 @@ The pipeline is designed to be flexible, GPU-enabled, and easily configurable th
 ## Prerequisites
 
 - Python 3.x
+- Python 2.X (Path need to be added in input_configuration file)
 - NumPy
+- PRESTO
 - Required custom modules located in `$PSS_VER0_DIR/scripts`
 - Properly configured environment variable:
 
