@@ -119,8 +119,8 @@ All intermediate products and final results are stored inside these directories.
 If you encounter issues:
 
 - Confirm PRESTO is correctly installed and in your system PATH  
-- Check that `$PSS_VER0_DIR` is properly set  
-- Verify that all required scripts exist inside `$PSS_VER0_DIR/scripts`  
+- Check that `$PSS_VER0_DIR` is properly set
+- Check that you have properly set teh python2 env path in your given input file.  
 - If the pipeline fails due to configuration errors, edit the auto-generated sample input file and try again  
 
 ---
