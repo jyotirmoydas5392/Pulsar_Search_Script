@@ -7,7 +7,7 @@ search_type = 0  # 0 for full search, 1 for sorting and folding only
 
 #Classification flag and path
 python2_path = /home/jdas/anaconda3/envs/conda_python2/bin/python2
-do_classify = 0  # 0 for classification enabled, 1 for classification disabled
+do_classify = 0  # 0 for classification disabled, 1 for classification enabled
 
 #CPUs for executing the search
 workers = 25  # Number of CPUs to use for processing
