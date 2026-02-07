@@ -4,6 +4,7 @@ import math
 import logging
 import argparse
 import shutil
+import subprocess
 import numpy as np
 
 # -------------------------------------------------------------------
@@ -263,17 +264,44 @@ def main():
     # Step 8: Candidate classification
     ml_path = os.path.join(base_dir, "Machine_learning")
     python2_path = params.get("python2_path")
-
     do_classify = params.get('do_classify')
+    use_GHVFDT = params.get('use_GHVFDT')
+    use_PICS = params.get('use_PICS')
+    threshold = params.get('threshold')
 
     # Check folding and classifier flag to run classifier
     if (fold_type in [1, 2]) and do_classify == 1:
-        run_classifier(
-            classifier_input_dir,
-            classifier_output_dir,
-            python2_path,
-            ml_path
-        )
+
+        if use_GHVFDT == 1 and use_PICS == 1:
+            print("Both classifiers are on. Please select only one classifier at a time.")
+
+        elif use_GHVFDT == 1:
+            run_ml_classifier(
+                classifier_input_dir,
+                classifier_output_dir,
+                python2_path,
+                ml_path
+            )
+        
+        elif use_PICS == 1:
+            pics_script = os.path.join(base_dir, "scripts", "ai_candidate_classification.py")
+            cmd = [
+                python2_path,
+                pics_script,
+                classifier_input_dir,
+                classifier_output_dir,
+                "--threshold",
+                str(threshold)
+            ]
+            print("Running PICS classifier:")
+            print(" ".join(cmd))
+            
+            try:
+                subprocess.check_call(cmd)
+            except subprocess.CalledProcessError as e:
+                print("Error running PICS classifier:", e)
+        else:
+            print("Classifier flag is on. Please select a classifier model appropriately.")
     else:
         print("Select appropriate folding and classifier flags to run classifier on filterbank folded PFD files.")
 

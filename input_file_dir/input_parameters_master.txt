@@ -1,21 +1,26 @@
-#Directories
+# Directories
 search_input_file_dir   = /home/jdas/data/47_100_PA_CD_data/NGC6637/31Jan2025/res
 search_output_dir       = /home/jdas/data/47_100_PA_CD_data/NGC6637/31Jan2025/res
 
-#Search type flag
+# Search type flag
 search_type = 0  # 0 for full search, 1 for sorting and folding only
 
-#Classification flag and path
+# Classification flags and path
 python2_path = /home/jdas/anaconda3/envs/conda_python2/bin/python2
-do_classify = 0  # 0 for classification disabled, 1 for classification enabled
+do_classify = 1  # 0 for classification disabled, 1 for classification enabled
+# Make sure only one flag is on at a time when classifier is on
+use_GHVFDT = 0  # 0 for not using GHVFDT ml model as classifier, 1 for using as classifier.
+use_PICS = 1    # 0 for not using PICS AI, 1 for using it.
+threshold = 0.5 # Probability threshold value for calling PICS classified candidates true or false.
+
 
 #CPUs for executing the search
 workers = 20  # Number of CPUs to use for processing
 
-#Filterbank file name
+# Filterbank file name
 fil_file = "NGC6637P2_pa_550_200_4096_4_1_8_31jan2025_3rd_Arm.fil"  # Input filterbank file
 
-#Pulsar Search Input Parameters
+# Pulsar Search Input Parameters
 start_DM              = 81.50  # Starting Dispersion Measure (DM) value for the search range (same as used in AA search).
 end_DM                = 82.50  # Ending DM value for the search range (same as used in AA search).
 dm_step               = 0.02    # Step size for DM trials (same as used in AA search); smaller values improve resolution but increase computation time.
@@ -26,7 +31,7 @@ period_tol_sort       = 0.25   # Tolerance for grouping candidates with similar 
 low_period            = 1.0    # Minimum period (in ms) to consider for candidates.
 high_period           = 10000.0 # Maximum period (in ms) to consider for candidates.
 SNR_cut               = 4.0    # Signal-to-noise ratio (SNR) threshold for filtering weak signals.
-fold_type             = 0      # Folding type:
+fold_type             = 2      # Folding type:
                                 #   0 = Fold into DAT files only
                                 #   1 = Fold into FIL files only
                                 #   2 = Fold into both DAT and FIL files
