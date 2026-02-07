@@ -59,39 +59,72 @@ parser = argparse.ArgumentParser(description="PSS Pipeline Runner")
 parser.add_argument(
     "-i", "--input",
     required=True,
-    help="Path to input configuration file (e.g., ../input_files/input_parameters.txt)"
+    help="Path to input configuration file (.txt) OR existing directory"
 )
 
 args = parser.parse_args()
 
-config_file_path = os.path.abspath(args.input)
+input_path = os.path.abspath(args.input)
 
 master_config = os.path.join(base_dir, "input_file_dir", "input_parameters_master.txt")
 
 # -------------------------------------------------------------------
-# Validate input configuration file
+# CASE 1: Input is a .txt file
 # -------------------------------------------------------------------
-if not os.path.exists(config_file_path):
+if input_path.endswith(".txt"):
 
-    logging.error(f"Provided configuration file not found: {config_file_path}")
+    config_file_path = input_path
 
-    target_dir = os.path.dirname(config_file_path)
+    if os.path.exists(config_file_path):
+        logging.info(f"Using configuration file: {config_file_path}")
 
-    if target_dir and not os.path.exists(target_dir):
-        os.makedirs(target_dir, exist_ok=True)
+    else:
+        logging.warning(f"Configuration file not found: {config_file_path}")
 
-    sample_config_path = os.path.join(target_dir, "sample_input_file.txt")
+        target_dir = os.path.dirname(config_file_path)
+
+        if not os.path.exists(target_dir):
+            logging.error(f"Directory does not exist: {target_dir}")
+            sys.exit(1)
+
+        sample_config_path = os.path.join(target_dir, "sample_input_file.txt")
+
+        if os.path.exists(master_config):
+            shutil.copy(master_config, sample_config_path)
+            logging.info(f"A sample configuration file has been created at: {sample_config_path}")
+            logging.info("Please edit this file and rerun the pipeline.")
+        else:
+            logging.error(f"Master configuration file not found: {master_config}")
+
+        sys.exit(1)
+
+# -------------------------------------------------------------------
+# CASE 2: Input is a directory
+# -------------------------------------------------------------------
+elif os.path.isdir(input_path):
+
+    logging.info(f"Input provided as directory: {input_path}")
+
+    sample_config_path = os.path.join(input_path, "sample_input_file.txt")
 
     if os.path.exists(master_config):
         shutil.copy(master_config, sample_config_path)
         logging.info(f"A sample configuration file has been created at: {sample_config_path}")
-        logging.info("Please edit this file with correct parameters and rerun the pipeline.")
+        logging.info("Please edit this file and rerun the pipeline.")
     else:
         logging.error(f"Master configuration file not found: {master_config}")
 
     sys.exit(1)
 
-logging.info(f"Using configuration file: {config_file_path}")
+# -------------------------------------------------------------------
+# CASE 3: Invalid input
+# -------------------------------------------------------------------
+else:
+    logging.error("Invalid input provided.")
+    logging.error("Please provide either:")
+    logging.error(" - a valid .txt configuration file path, or")
+    logging.error(" - an existing directory path")
+    sys.exit(1)
 
 # -------------------------------------------------------------------
 # Utility function
