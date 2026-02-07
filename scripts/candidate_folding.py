@@ -104,24 +104,45 @@ def candidate_folding(input_dir, output_dir, fil_file_dir, dat_file_dir, fil_fil
         return
 
     def main():
-        """Runs folding commands in parallel."""
+        """Runs folding commands in parallel and stores outputs in separate subdirectories."""
+
         base_dir = os.getcwd()
+
+        # Ensure main output directory exists
         os.makedirs(output_dir, exist_ok=True)
-        os.chdir(output_dir)
 
         with Pool(workers) as pool:
-            if fold_type == 0.0:
-                print("Total number of candidates:", len(dat_folding_strings), "and total number of foldings:", len(dat_folding_strings))
-                pool.map(folding, dat_folding_strings)
-            elif fold_type == 1.0:
-                print("Total number of candidates:", len(fil_folding_strings), "and total number of foldings:", len(fil_folding_strings))
-                pool.map(folding, fil_folding_strings)
-            else:
-                print("Total number of candidates:", len(dat_folding_strings), "and total number of foldings:", len(dat_folding_strings) + len(fil_folding_strings))
-                pool.map(folding, dat_folding_strings)
-                pool.map(folding, fil_folding_strings)
+            
+            # ----------- DAT FOLDING -----------
+            if fold_type == 0.0 or fold_type != 1.0:
+                if len(dat_folding_strings) > 0:
 
-        os.chdir(base_dir)
+                    dat_output_dir = os.path.join(output_dir, "dat_foldings")
+                    os.makedirs(dat_output_dir, exist_ok=True)
+
+                    os.chdir(dat_output_dir)
+
+                    print("Total number of candidates:", len(dat_folding_strings),
+                        "and total number of foldings:", len(dat_folding_strings))
+
+                    pool.map(folding, dat_folding_strings)
+                    os.chdir(base_dir)
+
+            # ----------- FIL FOLDING -----------
+            if fold_type == 1.0 or fold_type != 0.0:
+                if len(fil_folding_strings) > 0:
+
+                    fil_output_dir = os.path.join(output_dir, "fil_foldings")
+                    os.makedirs(fil_output_dir, exist_ok=True)
+
+                    os.chdir(fil_output_dir)
+
+                    print("Total number of candidates:", len(fil_folding_strings),
+                        "and total number of foldings:", len(fil_folding_strings))
+
+                    pool.map(folding, fil_folding_strings)
+                    os.chdir(base_dir)
+
     
     main()
 

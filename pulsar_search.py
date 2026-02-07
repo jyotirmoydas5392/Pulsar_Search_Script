@@ -137,7 +137,7 @@ def main():
     sifting_output_dir = search_output_dir
     folding_input_dir = search_output_dir
     folding_output_dir = os.path.join(search_output_dir, "folding_outputs")
-    classifier_input_dir = folding_output_dir
+    classifier_input_dir = os.path.join(folding_output_dir, "fil_foldings")
     classifier_output_dir = os.path.join(search_output_dir, "classifier_outputs")
 
     # Ensure all directories exist
@@ -233,13 +233,16 @@ def main():
 
     do_classify = params.get('do_classify')
 
-    if do_classify == 1:
+    # Check folding and classifier flag to run classifier
+    if (fold_type in [1, 2]) and do_classify == 1:
         run_classifier(
             classifier_input_dir,
             classifier_output_dir,
             python2_path,
             ml_path
         )
+    else:
+        print("Select appropriate folding and classifier flags to run classifier on filterbank folded PFD files.")
 
 
 if __name__ == "__main__":
