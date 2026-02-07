@@ -23,8 +23,8 @@ The pipeline is designed to be flexible, GPU-enabled, and easily configurable th
 - Python 2.X (Path need to be added in input_configuration file)
 - NumPy
 - PRESTO
-- Required custom modules located in `$PSS_VER0_DIR/scripts`
-- Properly configured environment variable:
+
+- Properly configure the enviroment variables:
 
 ```bash
 export PSS_VER0_DIR=/path/to/pss_pipeline_root
