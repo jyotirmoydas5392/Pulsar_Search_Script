@@ -9,7 +9,7 @@ The pipeline is designed to be flexible, GPU-enabled, and easily configurable th
 ## Features
 
 - Modular architecture for end-to-end pulsar search
-- PRESTO based paralell search on given DM range and step
+- PRESTO based parallel search on given DM range and step
 - Candidate sifting and duplicate removal
 - Candidate folding and visualization
 - Machine-learning based candidate classification
