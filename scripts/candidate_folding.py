@@ -112,7 +112,7 @@ def candidate_folding(input_dir, output_dir, fil_file_dir, dat_file_dir, fil_fil
         os.makedirs(output_dir, exist_ok=True)
 
         with Pool(workers) as pool:
-            
+
             # ----------- DAT FOLDING -----------
             if fold_type == 0.0 or fold_type != 1.0:
                 if len(dat_folding_strings) > 0:
@@ -153,7 +153,7 @@ if __name__ == "__main__":
     fil_file_dir = "fil_file_directory"  # Directory where .fil file is located
     dat_file_dir = "dat_file_directory"  # Directory where .dat and accel file are located
     fil_file = "your_file.fil"  # Change to the actual .fil file (full path)
-    accel_bin = "1"  # Acceleration search bin
+    accel_bin = "200"  # Acceleration search bin
     workers = 4  # Number of parallel processes
     fold_type = 0.0  # 0 for .dat, 1 for .fil, 2 for both
 
