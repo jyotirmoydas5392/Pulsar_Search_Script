@@ -176,6 +176,7 @@ A typical output directory structure looks like:
 search_output_dir/
 ├── folding_outputs/
 ├── classifier_outputs/
+├── final_outputs/
 ```
 
 All intermediate products and final results are stored inside these directories.
