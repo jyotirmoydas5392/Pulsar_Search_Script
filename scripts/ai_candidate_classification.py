@@ -7,7 +7,7 @@ import glob
 import shutil
 import logging
 import argparse
-import cPickle
+import pickle as cPickle
 
 # --------------------------------------------------
 # Logging
@@ -16,6 +16,10 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(levelname)s: %(message)s'
 )
+
+# Fixed path to make ubc_AI visible
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(__file__))))
 
 # --------------------------------------------------
 # Imports after path setup

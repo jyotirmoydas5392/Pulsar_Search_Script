@@ -47,7 +47,7 @@ try:
     from candidate_folding import *
     from ps_to_png import *
     from ml_candidate_classification import *
-    from ai_candidate_classification import *
+    from generate_final_outputs import *
     logging.info("Modules imported successfully.")
 except ImportError as e:
     logging.error("Error importing required modules.", exc_info=True)
@@ -173,9 +173,10 @@ def main():
     folding_output_dir = os.path.join(search_output_dir, "folding_outputs")
     classifier_input_dir = os.path.join(folding_output_dir, "fil_foldings")
     classifier_output_dir = os.path.join(search_output_dir, "classifier_outputs")
+    final_output_dir = os.path.join(search_output_dir, "final_outputs")
 
     # Ensure all directories exist
-    for dir_path in [search_output_dir, folding_output_dir, classifier_output_dir]:
+    for dir_path in [search_output_dir, folding_output_dir, classifier_output_dir, final_output_dir]:
         ensure_directory_exists(dir_path)
 
     # Step 2: Form the DM array
@@ -210,100 +211,140 @@ def main():
             workers
         )
 
-    # Step 4: Candidate sifting
-    period_tol_sort = params.get('period_tol_sort')
-    DM_filtering_cut_10 = params.get('DM_filtering_cut_10')
-    DM_filtering_cut_1000 = params.get('DM_filtering_cut_1000')
-    low_period = params.get('low_period')
-    high_period = params.get('high_period')
-    SNR_cut = params.get('SNR_cut')
+    # # Step 4: Candidate sifting
+    # period_tol_sort = params.get('period_tol_sort')
+    # DM_filtering_cut_10 = params.get('DM_filtering_cut_10')
+    # DM_filtering_cut_1000 = params.get('DM_filtering_cut_1000')
+    # low_period = params.get('low_period')
+    # high_period = params.get('high_period')
+    # SNR_cut = params.get('SNR_cut')
 
-    candidate_sifting(
-        sifting_input_dir,
-        sifting_output_dir,
-        fil_file,
-        DM_array,
-        accel_bin,
-        period_tol_sort,
-        DM_filtering_cut_10,
-        DM_filtering_cut_1000,
-        low_period,
-        high_period,
-        SNR_cut,
-        dm_step,
-        start_DM,
-        end_DM
-    )
+    # candidate_sifting(
+    #     sifting_input_dir,
+    #     sifting_output_dir,
+    #     fil_file,
+    #     DM_array,
+    #     accel_bin,
+    #     period_tol_sort,
+    #     DM_filtering_cut_10,
+    #     DM_filtering_cut_1000,
+    #     low_period,
+    #     high_period,
+    #     SNR_cut,
+    #     dm_step,
+    #     start_DM,
+    #     end_DM
+    # )
 
-    # Step 5: Remove duplicates
-    remove_duplicate_candidates(sifting_output_dir, sifting_output_dir, fil_file)
+    # # Step 5: Remove duplicates
+    # remove_duplicate_candidates(sifting_output_dir, sifting_output_dir, fil_file)
 
-    # Step 6: Candidate folding
-    fold_type = params.get('fold_type')
+    # # Step 6: Candidate folding
+    # fold_type = params.get('fold_type')
 
-    candidate_folding(
-        folding_input_dir,
-        folding_output_dir,
-        search_input_file_dir,
-        search_output_dir,
-        fil_file,
-        accel_bin,
-        workers,
-        fold_type,
-        DM_array
-    )
+    # candidate_folding(
+    #     folding_input_dir,
+    #     folding_output_dir,
+    #     search_input_file_dir,
+    #     search_output_dir,
+    #     fil_file,
+    #     accel_bin,
+    #     workers,
+    #     fold_type,
+    #     DM_array
+    # )
 
-    # Step 7: Convert PS files to PNG
-    batch_convert_ps_to_png(
-        folding_output_dir,
-        folding_output_dir,
-        workers,
-        keyword=os.path.splitext(os.path.basename(fil_file))[0]
-    )
+    # # Step 7: Convert PS files to PNG based on folding flag
+    # fold_type = params.get('fold_type')
 
-    # Step 8: Candidate classification
-    ml_path = os.path.join(base_dir, "Machine_learning")
-    python2_path = params.get("python2_path")
-    do_classify = params.get('do_classify')
-    use_GHVFDT = params.get('use_GHVFDT')
-    use_PICS = params.get('use_PICS')
-    threshold = params.get('threshold')
+    # dirs_to_process = []
 
-    # Check folding and classifier flag to run classifier
-    if (fold_type in [1, 2]) and do_classify == 1:
+    # if fold_type == 0:
+    #     dirs_to_process = [os.path.join(folding_output_dir, "dat_foldings")]
 
-        if use_GHVFDT == 1 and use_PICS == 1:
-            print("Both classifiers are on. Please select only one classifier at a time.")
+    # elif fold_type == 1:
+    #     dirs_to_process = [os.path.join(folding_output_dir, "fil_foldings")]
 
-        elif use_GHVFDT == 1:
-            run_ml_classifier(
-                classifier_input_dir,
-                classifier_output_dir,
-                python2_path,
-                ml_path
-            )
+    # elif fold_type == 2:
+    #     dirs_to_process = [
+    #         os.path.join(folding_output_dir, "dat_foldings"),
+    #         os.path.join(folding_output_dir, "fil_foldings")
+    #     ]
+    # else:
+    #     print("Select appropriate folding flag for PS to PNG conversion.")
+
+    # for ps_dir in dirs_to_process:
+
+    #     batch_convert_ps_to_png(
+    #         ps_dir,
+    #         ps_dir,
+    #         workers,
+    #         keyword=os.path.splitext(os.path.basename(fil_file))[0]
+    #     )
+
+    # # Step 8: Candidate classification
+    # fold_type = params.get('fold_type')
+    # ml_path = os.path.join(base_dir, "Machine_learning")
+    # python2_path = params.get("python2_path")
+    # do_classify = params.get('do_classify')
+    # use_GHVFDT = params.get('use_GHVFDT')
+    # use_PICS = params.get('use_PICS')
+    # threshold = params.get('threshold')
+
+    # # Check folding and classifier flag to run classifier
+    # if (fold_type in [1, 2]) and do_classify == 1:
+
+    #     if use_GHVFDT == 1 and use_PICS == 1:
+    #         print("Both classifiers are on. Please select only one classifier at a time.")
+
+    #     elif use_GHVFDT == 1:
+    #         run_ml_classifier(
+    #             classifier_input_dir,
+    #             classifier_output_dir,
+    #             python2_path,
+    #             ml_path
+    #         )
         
-        elif use_PICS == 1:
-            pics_script = os.path.join(base_dir, "scripts", "ai_candidate_classification.py")
-            cmd = [
-                python2_path,
-                pics_script,
-                classifier_input_dir,
-                classifier_output_dir,
-                "--threshold",
-                str(threshold)
-            ]
-            print("Running PICS classifier:")
-            print(" ".join(cmd))
+    #     elif use_PICS == 1:
+    #         pics_script = os.path.join(base_dir, "scripts", "ai_candidate_classification.py")
+    #         cmd = [
+    #             python2_path,
+    #             pics_script,
+    #             classifier_input_dir,
+    #             classifier_output_dir,
+    #             "--threshold",
+    #             str(threshold)
+    #         ]
+    #         print("Running PICS classifier:")
+    #         print(" ".join(cmd))
             
-            try:
-                subprocess.check_call(cmd)
-            except subprocess.CalledProcessError as e:
-                print("Error running PICS classifier:", e)
-        else:
-            print("Classifier flag is on. Please select a classifier model appropriately.")
-    else:
-        print("Select appropriate folding and classifier flags to run classifier on filterbank folded PFD files.")
+    #         try:
+    #             subprocess.check_call(cmd)
+    #         except subprocess.CalledProcessError as e:
+    #             print("Error running PICS classifier:", e)
+    #     else:
+    #         print("Classifier flag is on. Please select a classifier model appropriately.")
+    # else:
+    #     print("Select appropriate folding and classifier flags to run classifier on filterbank folded PFD files.")
+
+    # # Step 9: Generate final output PDF files of classified as well as all folded candidates
+    # # All paths are passes with params, no need to specify here.
+
+    # generate_final_pdfs(
+    #     fil_file=fil_file,
+    #     params=params,
+    #     folding_output_dir=folding_output_dir,
+    #     classifier_output_dir=classifier_output_dir,
+    #     final_output_dir=final_output_dir
+    # )
+    
+    # Print the final message.....
+    print("\n==========================================")
+    print("\n🎉 Processing complete!")
+    print("Yay, your processing is done.")
+    print("Now grab a cup of coffee ☕ and check the results after that.\n")
+    print("==========================================\n")
+
 
 
 if __name__ == "__main__":
