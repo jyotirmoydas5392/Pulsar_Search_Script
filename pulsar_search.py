@@ -198,6 +198,8 @@ def main():
     search_type = params.get('search_type')
     
     if search_type == 0:
+        print("Loding setup done. Congratulaitions, now running the pulsar search from very begenning.....")
+
         search_pulsar(
             search_input_file_dir,
             search_output_dir,
