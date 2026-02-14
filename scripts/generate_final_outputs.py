@@ -38,7 +38,7 @@ def pngs_to_pdf_parallel(
     keyword,
     scale_factor=0.4,
     jpeg_quality=40,
-    max_workers=4
+    max_workers=8
 ):
 
     print("\n=========================================")
@@ -115,38 +115,52 @@ def generate_final_pdfs(
     Path(final_output_dir).mkdir(parents=True, exist_ok=True)
 
     fold_type = params.get('fold_type')
-    workers = params.get('workers', 4)
+    do_classify = params.get('do_classify')
+    workers = params.get('workers', 8)
 
     print(f"Fold type: {fold_type}")
+    print(f"Classification enabled: {do_classify}")
     print(f"Workers requested: {workers}")
 
     file_name = fil_file.replace(".fil", "")
 
     dirs_to_process = []
 
+    # ---------------------------
+    # Handle fold_type
+    # ---------------------------
+
     if fold_type == 0:
-        dirs_to_process = [
+        dirs_to_process.append(
             os.path.join(folding_output_dir, "dat_foldings")
-        ]
+        )
 
     elif fold_type == 1:
-        dirs_to_process = [
-            os.path.join(folding_output_dir, "fil_foldings"),
-            os.path.join(classifier_output_dir, "positive_candidates"),
-            os.path.join(classifier_output_dir, "negative_candidates")
-        ]
+        dirs_to_process.append(
+            os.path.join(folding_output_dir, "fil_foldings")
+        )
 
     elif fold_type == 2:
-        dirs_to_process = [
+        dirs_to_process.extend([
             os.path.join(folding_output_dir, "dat_foldings"),
-            os.path.join(folding_output_dir, "fil_foldings"),
-            os.path.join(classifier_output_dir, "positive_candidates"),
-            os.path.join(classifier_output_dir, "negative_candidates")
-        ]
+            os.path.join(folding_output_dir, "fil_foldings")
+        ])
 
     else:
         print("Invalid fold_type. Skipping PDF generation.")
         return
+
+
+    # ---------------------------
+    # Add classification directories ONLY if enabled
+    # ---------------------------
+
+    if do_classify == 1:
+        dirs_to_process.extend([
+            os.path.join(classifier_output_dir, "positive_candidates"),
+            os.path.join(classifier_output_dir, "negative_candidates")
+        ])
+
 
     label_map = {
         "dat_foldings": "dat",

@@ -8,9 +8,9 @@ search_type = 1  # 0 for full search, 1 for sorting and folding only
 # Classification flags and path
 python2_path = /home/jdas/anaconda3/envs/conda_python2/bin/python2
 do_classify = 1  # 0 for classification disabled, 1 for classification enabled
-# Make sure only one flag is on at a time when classifier is on
-use_GHVFDT = 1  # 0 for not using GHVFDT ml model as classifier, 1 for using as classifier.
-use_PICS = 0    # 0 for not using PICS AI, 1 for using it.
+# Make sure only one flag is on (must) at a time when classifier is on
+use_GHVFDT = 0  # 0 for not using GHVFDT ml model as classifier, 1 for using as classifier.
+use_PICS = 1    # 0 for not using PICS AI, 1 for using it.
 threshold = 0.5 # Probability threshold value for calling PICS classified candidates true or false.
 
 
