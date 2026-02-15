@@ -212,76 +212,76 @@ def main():
             workers
         )
 
-    # # Step 4: Candidate sifting
-    # period_tol_sort = params.get('period_tol_sort')
-    # DM_filtering_cut_10 = params.get('DM_filtering_cut_10')
-    # DM_filtering_cut_1000 = params.get('DM_filtering_cut_1000')
-    # low_period = params.get('low_period')
-    # high_period = params.get('high_period')
-    # SNR_cut = params.get('SNR_cut')
+    # Step 4: Candidate sifting
+    period_tol_sort = params.get('period_tol_sort')
+    DM_filtering_cut_10 = params.get('DM_filtering_cut_10')
+    DM_filtering_cut_1000 = params.get('DM_filtering_cut_1000')
+    low_period = params.get('low_period')
+    high_period = params.get('high_period')
+    SNR_cut = params.get('SNR_cut')
 
-    # candidate_sifting(
-    #     sifting_input_dir,
-    #     sifting_output_dir,
-    #     fil_file,
-    #     DM_array,
-    #     accel_bin,
-    #     period_tol_sort,
-    #     DM_filtering_cut_10,
-    #     DM_filtering_cut_1000,
-    #     low_period,
-    #     high_period,
-    #     SNR_cut,
-    #     dm_step,
-    #     start_DM,
-    #     end_DM
-    # )
+    candidate_sifting(
+        sifting_input_dir,
+        sifting_output_dir,
+        fil_file,
+        DM_array,
+        accel_bin,
+        period_tol_sort,
+        DM_filtering_cut_10,
+        DM_filtering_cut_1000,
+        low_period,
+        high_period,
+        SNR_cut,
+        dm_step,
+        start_DM,
+        end_DM
+    )
 
-    # # Step 5: Remove duplicates
-    # remove_duplicate_candidates(sifting_output_dir, sifting_output_dir, fil_file)
+    # Step 5: Remove duplicates
+    remove_duplicate_candidates(sifting_output_dir, sifting_output_dir, fil_file)
 
-    # # Step 6: Candidate folding
-    # fold_type = params.get('fold_type')
+    # Step 6: Candidate folding
+    fold_type = params.get('fold_type')
 
-    # candidate_folding(
-    #     folding_input_dir,
-    #     folding_output_dir,
-    #     search_input_file_dir,
-    #     search_output_dir,
-    #     fil_file,
-    #     accel_bin,
-    #     workers,
-    #     fold_type,
-    #     DM_array
-    # )
+    candidate_folding(
+        folding_input_dir,
+        folding_output_dir,
+        search_input_file_dir,
+        search_output_dir,
+        fil_file,
+        accel_bin,
+        workers,
+        fold_type,
+        DM_array
+    )
 
-    # # Step 7: Convert PS files to PNG based on folding flag
-    # fold_type = params.get('fold_type')
+    # Step 7: Convert PS files to PNG based on folding flag
+    fold_type = params.get('fold_type')
 
-    # dirs_to_process = []
+    dirs_to_process = []
 
-    # if fold_type == 0:
-    #     dirs_to_process = [os.path.join(folding_output_dir, "dat_foldings")]
+    if fold_type == 0:
+        dirs_to_process = [os.path.join(folding_output_dir, "dat_foldings")]
 
-    # elif fold_type == 1:
-    #     dirs_to_process = [os.path.join(folding_output_dir, "fil_foldings")]
+    elif fold_type == 1:
+        dirs_to_process = [os.path.join(folding_output_dir, "fil_foldings")]
 
-    # elif fold_type == 2:
-    #     dirs_to_process = [
-    #         os.path.join(folding_output_dir, "dat_foldings"),
-    #         os.path.join(folding_output_dir, "fil_foldings")
-    #     ]
-    # else:
-    #     print("Select appropriate folding flag for PS to PNG conversion.")
+    elif fold_type == 2:
+        dirs_to_process = [
+            os.path.join(folding_output_dir, "dat_foldings"),
+            os.path.join(folding_output_dir, "fil_foldings")
+        ]
+    else:
+        print("Select appropriate folding flag for PS to PNG conversion.")
 
-    # for ps_dir in dirs_to_process:
+    for ps_dir in dirs_to_process:
 
-    #     batch_convert_ps_to_png(
-    #         ps_dir,
-    #         ps_dir,
-    #         workers,
-    #         keyword=os.path.splitext(os.path.basename(fil_file))[0]
-    #     )
+        batch_convert_ps_to_png(
+            ps_dir,
+            ps_dir,
+            workers,
+            keyword=os.path.splitext(os.path.basename(fil_file))[0]
+        )
 
     # Step 8: Candidate classification
     fold_type = params.get('fold_type')
@@ -328,16 +328,16 @@ def main():
     else:
         print("Select appropriate folding and classifier flags to run classifier on filterbank folded PFD files.")
 
-    # # Step 9: Generate final output PDF files of classified as well as all folded candidates
-    # # All paths are passes with params, no need to specify here.
+    # Step 9: Generate final output PDF files of classified as well as all folded candidates
+    # All paths are passes with params, no need to specify here.
 
-    # generate_final_pdfs(
-    #     fil_file=fil_file,
-    #     params=params,
-    #     folding_output_dir=folding_output_dir,
-    #     classifier_output_dir=classifier_output_dir,
-    #     final_output_dir=final_output_dir
-    # )
+    generate_final_pdfs(
+        fil_file=fil_file,
+        params=params,
+        folding_output_dir=folding_output_dir,
+        classifier_output_dir=classifier_output_dir,
+        final_output_dir=final_output_dir
+    )
     
     # Print the final message.....
     print("\n==========================================")
