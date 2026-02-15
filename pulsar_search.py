@@ -43,6 +43,7 @@ try:
     from generate_dm_array import *
     from pulsar_search import *
     from candidate_sifting import *
+    from miscellaneous_functions import *
     from candidate_folding import *
     from ps_to_png import *
     from ml_candidate_classification import *
