@@ -4,26 +4,39 @@ import subprocess
 
 def convert_ps_to_png_with_rotation(ps_file, png_file):
     try:
-        # Ghostscript command to convert PS to PNG with 270-degree rotation
-        command = [
-            "gs",
-            "-dBATCH",                        # Batch mode: exit after processing files
-            "-dNOPAUSE",                      # Disable pause after each page
-            "-dSAFER",                        # Restrict file operations for safety
-            "-dAutoRotatePages=/None",        # Prevent auto-rotation of pages
-            "-sDEVICE=png16m",                # Use the 24-bit color PNG output device
-            "-r360",                          # Set resolution to 360 DPI
-            f"-sOutputFile={png_file}",       # Specify the output file
-            "-c", "<</Orientation 3>> setpagedevice",  # Rotate 270 degrees (90 degrees counterclockwise)
-            "-f", ps_file                     # Specify the input PostScript file
-        ]
+        pdf_file = ps_file.replace(".ps", ".pdf")
 
-        # Run the Ghostscript command
-        subprocess.run(command, check=True)
-        print(f"Successfully converted {ps_file} to {png_file} with a 270-degree rotation")
+        # Step 1: PS → PDF
+        subprocess.run(
+            ["ps2pdf", ps_file, pdf_file],
+            check=True
+        )
+
+        # Step 2: PDF → PNG (with rotation)
+        subprocess.run(
+            [
+                "gs",
+                "-q",                 # quiet mode
+                "-dBATCH",
+                "-dNOPAUSE",
+                "-sDEVICE=png16m",
+                "-r360",
+                f"-sOutputFile={png_file}",
+                pdf_file
+            ],
+            check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL
+        )
+
+        print(f"Converted {ps_file} → {png_file}")
+
+        # Optional: remove intermediate PDF
+        os.remove(pdf_file)
 
     except subprocess.CalledProcessError as e:
-        print(f"Error during conversion: {e}")
+        print(f"Error during conversion of {ps_file}: {e}")
+
 
 def batch_convert_ps_to_png(input_dir, output_dir, workers, keyword):
     """
